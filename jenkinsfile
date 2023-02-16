@@ -9,7 +9,7 @@ pipeline {
     stage ('publish ECR') {
       steps {
         withEnv (["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"]) {
-          sh 'docker login -u AWS -p-stdin $(aws ecr-public get-login-password --region us-east-1) public.ecr.aws/d1k3x6e5'
+          sh 'docker login -u AWS --password-stdin $(aws ecr-public get-login-password --region us-east-1) public.ecr.aws/d1k3x6e5'
           sh 'docker build -t ecr-jengomart-image .' 
           sh 'docker tag  ecr-jengomart-image:latest public.ecr.aws/d1k3x6e5/ecr-jengomart-app:""$BUILD_ID""'
           sh 'docker push public.ecr.aws/d1k3x6e5/ecr-jengomart-app:""$BUILD_ID""'
